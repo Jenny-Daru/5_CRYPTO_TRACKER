@@ -1,8 +1,25 @@
-import React from 'react';
+import React from "react";
+import { useQuery } from "react-query";
+import { fetchCoinHistory } from "../api";
 
-export default function Chart() {
-    return (
-        <h1>Chart</h1>
-    );
+interface IHistorical {
+  time_open: string;
+  time_close: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  market_cap: number;
 }
 
+interface ChartProps {
+  coinId: string;
+}
+
+export default function Chart({ coinId }: ChartProps) {
+  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+    fetchCoinHistory(coinId)
+  );
+  return <h1>Chart</h1>;
+}
